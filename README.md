@@ -1,19 +1,6 @@
 # OCR with GLM-OCR
 
-A Gradio-based Optical Character Recognition (OCR) application that uses Ollama's vision models to extract text from images. Supports both plain text and HTML-formatted output with an interactive dual-pane viewer.
-
-## Features
-
-- **Vision Model Integration**: Uses Ollama's vision-capable models (GLM-4-Vision, LLaVA, etc.) for OCR
-- **Dual-Pane Interface**: Side-by-side image and extracted text viewer with scroll synchronization
-- **HTML Mode**: Option to extract text with HTML formatting (bold, italics, tables, line breaks)
-- **Batch Processing**: Process multiple images at once with progress tracking
-- **Interactive Viewer**: 
-  - Drag to resize the image/text panels
-  - Double-click images to open lightbox zoom
-  - Edit extracted text directly in the viewer
-  - Copy all text to clipboard
-- **Dark Theme**: Professional dark UI with syntax-highlighted colors
+A Gradio-based Optical Character Recognition (OCR) application that uses the `glm-ocr:latest` model via Ollama to extract text from images. Features an interactive dual-pane viewer with scroll synchronization, HTML formatting support, and batch processing capabilities.
 
 ## Requirements
 
@@ -27,7 +14,7 @@ requests>=2.28.0
 ### Ollama Requirements
 
 - [Ollama](https://ollama.ai/) installed and running
-- A vision-capable model pulled (e.g., `ollama pull glm4v` or `ollama pull llava`)
+- **Only tested with**: `glm-ocr:latest` model
 
 ## Installation
 
@@ -42,11 +29,9 @@ requests>=2.28.0
    - Download from: https://ollama.ai/
    - Or via terminal: `curl -fsSL https://ollama.dev/install.sh | sh`
 
-4. **Pull a vision model**:
+4. **Pull the required OCR model**:
    ```bash
-   ollama pull glm4v
-   # or
-   ollama pull llava
+   ollama pull glm-ocr:latest
    ```
 
 5. **Start Ollama server** (if not running):
@@ -64,7 +49,7 @@ requests>=2.28.0
 2. Open your browser to the URL shown (typically `http://127.0.0.1:7860`)
 
 3. **Using the interface**:
-   - Select a vision model from the dropdown
+   - Select `glm-ocr:latest` from the model dropdown
    - Optionally enable "HTML formatting mode" for structured output
    - Optionally enable "Clear on new batch" to reset results between runs
    - Upload one or more images using the file picker
@@ -86,7 +71,7 @@ requests>=2.28.0
 ```
 ┌─────────────────┐     ┌─────────────┐     ┌──────────────┐
 │   Gradio UI    │────▶│   Python    │────▶│   Ollama     │
-│  (User Input)  │     │  (Processing)│    │ (Vision Model)│
+│  (User Input)  │     │  (Processing)│    │ glm-ocr      │
 └─────────────────┘     └─────────────┘     └──────────────┘
                               │
                               ▼
@@ -101,7 +86,7 @@ requests>=2.28.0
 1. **Image Input**: User uploads images via Gradio file input
 2. **Base64 Encoding**: Images are converted to base64 for API transmission
 3. **Ollama API Call**: 
-   - Prompt is sent with the image to the selected vision model
+   - Prompt is sent with the image to the `glm-ocr:latest` model
    - Model processes the image and returns extracted text
    - Streaming response is accumulated
 4. **Result Display**: 
@@ -116,17 +101,15 @@ requests>=2.28.0
 
 - `get_models()`: Fetches available Ollama models
 - `image_to_b64()`: Converts PIL images to base64
-- `ocr_image()`: Sends image to Ollama API and extracts text
+- `ocr_image()`: Sends image to Ollama API and extracts text using `glm-ocr:latest`
 - `build_viewer_html()`: Creates the interactive HTML viewer
 - `process_images()`: Main processing pipeline with progress yields
 
-## Project Details
+## What It Does
 
-### What It Does
-
-- **Text Extraction**: Extracts all visible text from images using AI-powered vision models
-- **Phone Number Detection**: Specifically looks for and extracts phone numbers
-- **HTML Formatting**: Optionally preserves formatting like bold, italics, tables
+- **Text Extraction**: Extracts all visible text from images using `glm-ocr:latest` via Ollama
+- **Text Number Detection**: Specifically extracts Text numbers from images
+- **HTML Formatting**: Optionally preserves formatting like bold, italics, tables with HTML output
 - **Visual Comparison**: Shows side-by-side view of original image and extracted text
 - **Batch Processing**: Handles multiple images in sequence with status updates
 
@@ -138,8 +121,20 @@ requests>=2.28.0
 - Converting scanned documents to text
 - Extracting contact information from business cards
 - Processing invoice images
+- Reading text from photos
 
-### Configuration
+## Screenshots
+
+> **Note**: The images below are placeholders. Replace them with actual screenshots of the application.
+> Place your screenshot images in the `screenshots/` directory.
+
+### Main Interface
+![Main Interface](screenshots/interface.png)
+
+### OCR Viewer
+![OCR Viewer](screenshots/viewer.png)
+
+## Configuration
 
 The application connects to Ollama at `http://localhost:11434` (default). To change:
 
@@ -148,11 +143,11 @@ The application connects to Ollama at `http://localhost:11434` (default). To cha
 OLLAMA_BASE = "http://localhost:11434"  # Change to your Ollama URL
 ```
 
-### Model Recommendations
+## Notes
 
-- `glm4v` - General purpose, good accuracy
-- `llava` - Fast, lightweight option
-- `llama3.2-vision` - Meta's vision model
+- **Only tested with `glm-ocr:latest`** - Other models may work but are not guaranteed
+- The model must be pulled before running the application
+- Ensure Ollama is running before starting the Gradio app
 
 ## License
 
