@@ -38,7 +38,7 @@ def ocr_image(pil_image, model, html_mode=False):
         )
     else:
         prompt = (
-            "Extract all text and phone numbers from this image. "
+            "Extract all text and Text numbers from this image. "
             "Return only the raw text, nothing else."
         )
 
@@ -544,7 +544,7 @@ def refresh_models():
 initial_models = get_models()
 default_model = initial_models[0] if initial_models else ""
 
-with gr.Blocks(title="OCR Phone Extractor", css="""
+with gr.Blocks(title="OCR Text Extractor", css="""
     body { background: #0a0a0a !important; }
     .gradio-container { background: #0a0a0a !important; max-width: 1300px !important; }
     label { color: #555 !important; font-family: monospace !important; font-size: 11px !important; }
@@ -555,7 +555,7 @@ with gr.Blocks(title="OCR Phone Extractor", css="""
     gr.HTML("""
     <div style="padding:16px 0 8px;font-family:'Syne',sans-serif;">
       <div style="font-size:10px;letter-spacing:3px;color:#333;text-transform:uppercase;margin-bottom:3px;">Ollama Vision</div>
-      <div style="font-size:22px;color:#e8c547;font-weight:700;letter-spacing:-0.5px;">OCR Phone Extractor</div>
+      <div style="font-size:22px;color:#e8c547;font-weight:700;letter-spacing:-0.5px;">OCR Text Extractor</div>
       <div style="font-size:11px;color:#2a2a2a;margin-top:3px;font-family:monospace;">scroll text → image follows &nbsp;·&nbsp; drag divider &nbsp;·&nbsp; double-click image → zoom</div>
     </div>
     """)
@@ -581,4 +581,4 @@ with gr.Blocks(title="OCR Phone Extractor", css="""
     run_btn.click(fn=process_images, inputs=[file_input, model_dd, reset_check, html_check], outputs=[viewer, status_box])
     clear_btn.click(fn=clear_all, outputs=[viewer, status_box])
 
-app.launch()
+app.launch(share=False)
